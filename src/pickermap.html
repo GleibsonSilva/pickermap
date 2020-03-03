@@ -29,6 +29,8 @@
 </div>
 
 <script>
+    let apikeymapbox = '';
+
     let latlngInicial = [-16.679504, -49.256698];//latitude-longitude inicial
 
     let map = L.map('idMap').setView(latlngInicial, 14);//inicializa o mapa com uma altura pre-definida (14)
@@ -37,7 +39,7 @@
     insereLatLngNosCamposTexto(`LatLng(${latlngInicial.toString()})`, latlngInicial[0].toString(), latlngInicial[1].toString());
 
     //configuração para acesso a API de mapas com chave unica (Importante: não perder esta chave!)
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=sk.eyJ1IjoiZ2xlaWJzb25ib3JnZXMiLCJhIjoiY2s3YnloMXhyMDBmYjNmcmw0c3VpZXB6diJ9.8KAQBUQfCtPfnIGCgl2efQ', {
+    L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${apikeymapbox}`, {
         attribution: '',
         maxZoom: 18,
         id: 'mapbox/streets-v11',
