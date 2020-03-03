@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+    <title>PickerMap</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS estilos impressindiveis para o funcionamento do mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+
+    <!-- JS - Scripts impressindiveis para o funcionamento do mapa -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+</head>
+<body>
+<!--Altere o estilo a sua necessidade em largura e altura-->
+<div id="idMap" style="width: 100%; height: 350px; position: relative"></div>
+<br>
+<br>
+<div style="text-align: center">
+    <span id="latlon" style="font-family: Arial"></span>
+    <br>
+    <br>
+    <br>
+    <span id="separados" style="font-family: Arial"></span>
+</div>
+
+<script>
+    let latlngInicial = [-16.679504, -49.256698];//latitude-longitude inicial
+
+    let map = L.map('idMap').setView(latlngInicial, 14);//inicializa o mapa com uma altura pre-definida (14)
+
+    L.marker(latlngInicial).addTo(map).bindPopup(`LatLng(${latlngInicial.toString()})`).openPopup();//marcador inicial para um latlng pre-definida
+    insereLatLngNosCamposTexto(`LatLng(${latlngInicial.toString()})`, latlngInicial[0].toString(), latlngInicial[1].toString());
+
+    //configuração para acesso a API de mapas com chave unica (Importante: não perder esta chave!)
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=sk.eyJ1IjoiZ2xlaWJzb25ib3JnZXMiLCJhIjoiY2s3YnloMXhyMDBmYjNmcmw0c3VpZXB6diJ9.8KAQBUQfCtPfnIGCgl2efQ', {
+        attribution: '',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+    }).addTo(map);
+
+    //função do evento de escuta de click no mapa
+    function onMapClick(e) {
+        let marker = L.marker(e.latlng).addTo(map);
+        marker.bindPopup(e.latlng.toString()).openPopup();
+        insereLatLngNosCamposTexto(e.latlng, e.latlng.lat, e.latlng.lng);
+    }
+
+    //função para inserir nos campos texto da tela, a latitude e longitude
+    function insereLatLngNosCamposTexto(latlng, latitude, longitude) {
+        document.getElementById('latlon').innerText = latlng.toString();
+        document.getElementById('separados').innerText = `Latitude: ${latitude}\nLongitude: ${longitude}`;
+    }
+
+    map.on('click', onMapClick);//insere o evento de escuta de click no mapa
+</script>
+</body>
+</html>
